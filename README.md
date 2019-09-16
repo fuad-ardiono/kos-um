@@ -1,6 +1,6 @@
-# Adonis fullstack application
+# Kos-um
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+Module
 
 1. Bodyparser
 2. Session
