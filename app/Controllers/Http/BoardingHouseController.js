@@ -4,6 +4,7 @@ const Database = use('Database')
 const BoardingHouse = use('App/Models/BoardingHouse')
 const { validateAll } = use('Validator')
 const Helpers = use('Helpers')
+const CloudinaryService = use('App/Services/CloudinaryService');
 
 class BoardingHouseController {
     async index({params, response, request}){
@@ -24,7 +25,7 @@ class BoardingHouseController {
         if(queryParams.hasOwnProperty('search')){
             queryBoarding.where('name', queryParams.search)
         }
-        
+
         await queryBoarding.then((data) => {
             return response.json(data)
         })
@@ -135,27 +136,29 @@ class BoardingHouseController {
         const boardingHouseImg = request.file('boarding_house_img', {
             types: ['image'],
             size: '10mb'
-          })
+          });
 
-          let date = new Date()
-          let day = date.getDate().toString()
-          let month = date.getMonth().toString()
-          let year = date.getFullYear().toString()
-          let hours = date.getHours().toString()
-          let minutes = date.getMinutes().toString()
-          let second =  date.getSeconds().toString()
+          const cloudinaryResponse = await CloudinaryService.v2.uploader.upload(boardingHouseImg.tmpPath, {folder: 'kosum'});
 
-          let name = `${day}-${month}-${year}-${hours}:${minutes}:${second}.${boardingHouseImg.subtype}`
-          await boardingHouseImg.move(Helpers.publicPath('/img/boarding-house'), {
-            name: name,
-            overwrite: true
-          })
-        
-          if (!boardingHouseImg.moved()) {
-            return response.status(400).json(await boardingHouseImg.error())
-          }
+          // let date = new Date()
+          // let day = date.getDate().toString()
+          // let month = date.getMonth().toString()
+          // let year = date.getFullYear().toString()
+          // let hours = date.getHours().toString()
+          // let minutes = date.getMinutes().toString()
+          // let second =  date.getSeconds().toString()
+          //
+          // let name = `${day}-${month}-${year}-${hours}:${minutes}:${second}.${boardingHouseImg.subtype}`
+          // await boardingHouseImg.move(Helpers.publicPath('/img/boarding-house'), {
+          //   name: name,
+          //   overwrite: true
+          // })
+          //
+          // if (!boardingHouseImg.moved()) {
+          //   return response.status(400).json(await boardingHouseImg.error())
+          // }
 
-          return response.status(200).json({"path": `/img/boarding-house/${name}`})
+          return response.status(200).json({"path": `${cloudinaryResponse.secure_url}`})
     }
 }
 
