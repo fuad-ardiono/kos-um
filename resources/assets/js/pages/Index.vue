@@ -26,7 +26,26 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
 export default {
     name: 'Index',
+    data() {
+        return {
+            boardingHouse: []
+        }
+    },
+    methods: {
+        fetchBoardingHouse() {
+            axios.get('/api/v1/boarding-house').then((res) => {
+                this.boardingHouse = res.data
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
+    },
+    created() {
+        this.fetchBoardingHouse();
+    }
 }
 </script>
