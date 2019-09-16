@@ -35,7 +35,7 @@ class UserController {
 
         let user = User.create(body)
 
-        return response.status(201).json({"message": "User created"})
+        return response.status(201).json({"messages": "User created"})
     }
 
     async login({request, response, auth}) {
@@ -67,7 +67,7 @@ class UserController {
 
                 if(request.input('email')){
                     const user = await auth.attempt(uid, body.password)
-                    return response.status(200).json({"message": "Login success", "loggedIn": 1, "user": user})
+                    return response.status(200).json({"messages": "Login success", "loggedIn": 1, "user": user})
                 }
 
                 if(request.input('username')){
@@ -78,7 +78,7 @@ class UserController {
 
                         if(isValid){
                             const user = await auth.loginViaId(userRecord.id)
-                            return response.status(200).json({"message": "Login success", "loggedIn": 1, "user": user})
+                            return response.status(200).json({"messages": "Login success", "loggedIn": 1, "user": user})
                         }
                     }
 
@@ -87,10 +87,10 @@ class UserController {
                 try {
                     const user = await auth.check()
                 } catch {
-                    return response.status(400).json({"message": "Email atau username dan atau password salah", "loggedIn": 0})
+                    return response.status(400).json({"messages": "Email atau username dan atau password salah", "loggedIn": 0})
                 }
                 
-                return response.status(200).json({"message": "User telah login", "loggedIn": 1, "user": await auth.getUser()})                
+                return response.status(200).json({"messages": "User telah login", "loggedIn": 1, "user": await auth.getUser()})                
             }
     }
 
@@ -98,11 +98,25 @@ class UserController {
         try {
             const user = await auth.check()
         } catch {
-            return response.status(400).json({"message": "User tidak sedang login", "loggedIn": 0})
+            return response.status(400).json({"messages": "User tidak sedang login", "loggedIn": 0})
         }
 
         const user = await auth.logout()
-        return response.status(200).json({"message": "Logout berhasil", "loggedIn": 0})
+        return response.status(200).json({"messages": "Logout berhasil", "loggedIn": 0})
+    }
+
+    async check({response, auth}) {
+        try {
+            const authenticated = await auth.check()
+
+            if(authenticated === true){
+                const user = await auth.getUser()
+
+                return response.status(200).json({"messages": "User sedang login", "loggedIn": 1, user: user})                
+            }
+          } catch (error) {
+            return response.status(401).json({"messages": "User tidak sedang login", "loggedIn": 0})  
+          }
     }
 }
 

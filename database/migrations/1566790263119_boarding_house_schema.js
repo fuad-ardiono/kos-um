@@ -9,7 +9,7 @@ class BoardingHouseSchema extends Schema {
       table.increments()
       table.string('name').notNullable()
       table.string('address').notNullable()
-      table.text('image').notNullable()
+      table.text('image', 'longtext').notNullable()
       table.timestamps()
     })
   }
