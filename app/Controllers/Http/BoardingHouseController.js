@@ -4,7 +4,7 @@ const Database = use('Database')
 const BoardingHouse = use('App/Models/BoardingHouse')
 const { validateAll } = use('Validator')
 const Helpers = use('Helpers')
-const CloudinaryService = use('App/Services/CloudinaryService');
+const CloudinaryService = require('../../../services/CloudinaryService');
 
 class BoardingHouseController {
     async index({params, response, request}){
