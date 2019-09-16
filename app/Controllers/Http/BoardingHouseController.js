@@ -4,9 +4,21 @@ const Database = use('Database')
 const BoardingHouse = use('App/Models/BoardingHouse')
 const { validateAll } = use('Validator')
 const Helpers = use('Helpers')
-const CloudinaryService = require('../../../services/CloudinaryService');
+
+const cloudinary = require('cloudinary');
+
+cloudinary.config({
+  cloud_name: 'dgs0l7xvs',
+  api_key: '784528876854189',
+  api_secret: 'U7D-FR2dmOY3eDDua0qw6KYfuXg'
+});
 
 class BoardingHouseController {
+
+    constructor(){
+
+    }
+
     async index({params, response, request}){
         const queryParams = request.get()
 
@@ -138,7 +150,7 @@ class BoardingHouseController {
             size: '10mb'
           });
 
-          const cloudinaryResponse = await CloudinaryService.v2.uploader.upload(boardingHouseImg.tmpPath, {folder: 'kosum'});
+          const cloudinaryResponse = await cloudinary.v2.uploader.upload(boardingHouseImg.tmpPath, {folder: 'kosum'});
 
           // let date = new Date()
           // let day = date.getDate().toString()
