@@ -1,10 +1,10 @@
 'use strict'
 
-const Url = require('url-parse')
-const DATABASE_URL = new Url(Env.get('DATABASE_URL'))
-
 /** @type {import('@adonisjs/framework/src/Env')} */
 const Env = use('Env')
+
+const Url = require('url-parse')
+const DATABASE_URL = new Url(Env.get('postgres://zvvopibsigalmr:10d352f9b68aa71172601dce88fbfa45cda91ecd22603487ef6bbd8cbd9e5641@ec2-174-129-227-128.compute-1.amazonaws.com:5432/ddktp2fo35kmmf'))
 
 /** @type {import('@adonisjs/ignitor/src/Helpers')} */
 const Helpers = use('Helpers')
